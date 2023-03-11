@@ -14,6 +14,7 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   const accessToken = await sign_in(req.body);
+  res.cookie("accessToken", accessToken, { httpOnly: true });
   return res.status(200).json({ accessToken: accessToken });
 };
 

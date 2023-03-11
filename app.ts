@@ -4,10 +4,10 @@ import { AppDataSource } from "./databases/data";
 import useRouter from "./routes/user";
 import domesticRouter from "./routes/domestic";
 import cartRouter from "./routes/cart";
-import dotenv from "dotenv";
 import { checkJwtToken } from "./middlewares/checkJwtToken";
 import { errorHandlerMiddleware } from "./middlewares/error-handler";
 import { notFoundRoute } from "./middlewares/notFoundRoute";
+import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
