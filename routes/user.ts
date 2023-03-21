@@ -4,7 +4,8 @@ import { checkJwtToken } from "../middlewares/checkJwtToken";
 
 const router = Router();
 
-router.route("/").post(register).get(login);
+router.route("/").post(register);
+router.route("/login").post(login);
 router.route("/getAll").get(checkJwtToken, getAllUser);
 router.route("/deleteUser/:id").delete(deleteUser);
 

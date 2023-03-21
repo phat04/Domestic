@@ -21,7 +21,7 @@ export const sign_in = async (body: any) => {
   const user = await userRepository.findOne({ where: { name } });
   if (user) {
     if (!user?.checkPassword(password)) {
-      throw new CustomAPIError("Not found user", 404);
+      throw new CustomAPIError("password Invalid", 401);
     }
     const JwtPayload: JwtPayload = {
       id: user.id,

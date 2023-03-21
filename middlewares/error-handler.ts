@@ -4,10 +4,13 @@ import { CustomAPIError } from "../errors/custom-error";
 export const errorHandlerMiddleware = (
   err: Error,
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
-  console.error(err.message);
+  console.error("Error errorHandlerMiddleware", err);
   if (err instanceof CustomAPIError) {
+    console.log("asdf");
+
     return res.status(err.statusCode).json({ msg: err.message });
   }
   return res.status(500).json({ msg: "somethings are wrong" });

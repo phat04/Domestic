@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { deleteUserById, getAllU, sign_in, sign_up } from "../services/user";
 import { User } from "../entities/User";
 import { CustomAPIError } from "../errors/custom-error";
@@ -12,10 +12,18 @@ export const register = async (req: Request, res: Response) => {
   res.status(200).json({ message: "success", name });
 };
 
-export const login = async (req: Request, res: Response) => {
-  const accessToken = await sign_in(req.body);
-  res.cookie("accessToken", accessToken, { httpOnly: true });
-  return res.status(200).json({ accessToken: accessToken });
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const accessToken = await sign_in(req.body);
+    res.cookie("accessToken", accessToken, { httpOnly: true });
+    return res.status(200).json({ accessToken: accessToken });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const getAllUser = async (req: Request, res: Response) => {
