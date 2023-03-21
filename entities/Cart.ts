@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { productType } from "../utils/productType";
 
 @Entity()
 export class Cart {
@@ -14,8 +15,9 @@ export class Cart {
   @Column()
   userId: number;
 
-  @Column()
-  //domestics: [{ domestictId: number; quality: number | 1 }];
+  @Column("simple-array")
+  domestics: typeof productType[];
+
   @CreateDateColumn()
   created_at: Date;
 

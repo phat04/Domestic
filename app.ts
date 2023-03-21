@@ -7,8 +7,6 @@ import cartRouter from "./routes/cart";
 import { checkJwtToken } from "./middlewares/checkJwtToken";
 import { errorHandlerMiddleware } from "./middlewares/error-handler";
 import { notFoundRoute } from "./middlewares/notFoundRoute";
-import dotenv from "dotenv";
-dotenv.config();
 
 const app = express();
 app.use(express.json());

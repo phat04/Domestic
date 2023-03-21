@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { productType } from "../utils/productType";
 
 @Entity()
 export class Order {
@@ -9,7 +10,7 @@ export class Order {
   userId: number;
 
   @Column()
-  domestics: [{ domesticId: number; quality: number | 1 }];
+  domestics: typeof productType[];
 
   @Column()
   status: string | "pending";
