@@ -26,6 +26,6 @@ app.use("/cart", checkJwtToken, cartRouter);
 app.use(errorHandlerMiddleware);
 app.use(notFoundRoute);
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log("the server is running on port 3000");
 });
