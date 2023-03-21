@@ -6,7 +6,7 @@ export const errorHandlerMiddleware = (
   req: Request,
   res: Response
 ) => {
-  console.log(err);
+  console.error(err.message);
   if (err instanceof CustomAPIError) {
     return res.status(err.statusCode).json({ msg: err.message });
   }
