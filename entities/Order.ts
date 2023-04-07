@@ -1,15 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity } from "typeorm";
 import { productType } from "../utils/productType";
+import { BaseEntity } from "./BaseEntity";
 
 @Entity()
-export class Order {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Order extends BaseEntity {
   @Column()
   userId: number;
 
-  @Column()
+  @Column("simple-array")
   domestics: typeof productType[];
 
   @Column()

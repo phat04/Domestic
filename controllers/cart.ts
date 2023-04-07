@@ -1,33 +1,43 @@
 import { Request, Response } from "express";
-import {
-  createCart,
-  deleteCartById,
-  getAllC,
-  getCartById,
-  updateCartById,
-} from "../services/cart";
+import * as CartService from "../services/cart";
+import { catchAsync } from "../utils/catchAsync";
+import { CartItem } from "../entities/CartItem";
 
-export const addCart = async (req: Request, res: Response) => {
-  const cart = await createCart(req.body);
+export const addCart = catchAsync(async (req: Request, res: Response) => {
+  const cart = await CartService.createCart();
   res.status(200).json({ message: "success", cart });
-};
+});
 
-export const getAllCart = async (req: Request, res: Response) => {
-  const cart = await getAllC(req.body);
+export const getAllCart = catchAsync(async (req: Request, res: Response) => {
+  const cart = await CartService.getAllCart();
   res.status(200).json({ message: "success", cart });
-};
+});
 
-export const getCart = async (req: Request, res: Response) => {
-  const cart = await getCartById(req.params);
+export const getCart = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const cart = await CartService.getCartById(Number(id));
   res.status(200).json({ message: "success", cart });
-};
+});
 
-export const updateCart = async (req: Request, res: Response) => {
-  const cart = await updateCartById(parseInt(req.params.id), req.body);
+export const updateCart = catchAsync(async (req: Request, res: Response) => {
+  const cart = await CartService.updateCartById(
+    parseInt(req.params.id),
+    req.body
+  );
   return res.status(200).json({ message: "Updated", cart });
-};
+});
 
-export const deleteCart = async (req: Request, res: Response) => {
-  await deleteCartById(req.params);
+export const deleteCart = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  await CartService.deleteCartById(parseInt(id));
   res.status(200).json({ message: "success" });
-};
+});
+
+export const addItemsToCart = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { cart_items } = req.body;
+    await CartService.addItemsToCart(parseInt(id), cart_items as CartItem[]);
+    res.status(200).json({ message: "success" });
+  }
+);

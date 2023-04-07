@@ -1,5 +1,6 @@
-import { NextFunction, Request, Response, request, response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { CustomAPIError } from "../errors/custom-error";
+import { StatusCodes } from "http-status-codes";
 
 export const errorHandlerMiddleware = (
   err: Error,
@@ -9,9 +10,9 @@ export const errorHandlerMiddleware = (
 ) => {
   console.error("Error errorHandlerMiddleware", err);
   if (err instanceof CustomAPIError) {
-    console.log("asdf");
-
     return res.status(err.statusCode).json({ msg: err.message });
   }
-  return res.status(500).json({ msg: "somethings are wrong" });
+  return res
+    .status(StatusCodes.INTERNAL_SERVER_ERROR)
+    .json({ msg: "somethings are wrong" });
 };

@@ -1,16 +1,15 @@
 import { Router } from "express";
-import {
-  addCart,
-  deleteCart,
-  getAllCart,
-  getCart,
-  updateCart,
-} from "../controllers/cart";
+import * as cartController from "../controllers/cart";
+import { checkRole } from "../middlewares/checkRole";
 
 const router = Router();
 
-router.route("/").post(addCart).get(getAllCart);
-router.route("/getCart/:id").get(getCart);
-router.route("/updateCart/:id").post(updateCart);
-router.route("/deleteCart/:id").delete(deleteCart);
+router
+  .route("/")
+  .post(checkRole, cartController.addCart)
+  .get(checkRole, cartController.getAllCart);
+router.route("/getCart/:id").get(cartController.getCart);
+router.route("/updateCart/:id").patch(cartController.updateCart);
+router.route("/deleteCart/:id").delete(cartController.deleteCart);
+router.route("/addItemToCart/:id").patch(cartController.addItemsToCart);
 export default router;

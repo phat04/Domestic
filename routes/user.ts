@@ -1,12 +1,20 @@
 import { Router } from "express";
-import { deleteUser, getAllUser, login, register } from "../controllers/user";
+import * as userController from "../controllers/user";
 import { checkJwtToken } from "../middlewares/checkJwtToken";
+import { checkRole } from "../middlewares/checkRole";
 
 const router = Router();
 
-router.route("/").post(register);
-router.route("/login").post(login);
-router.route("/getAll").get(checkJwtToken, getAllUser);
-router.route("/deleteUser/:id").delete(deleteUser);
+router.route("/").post(userController.register);
+router.route("/login").post(userController.login);
+router
+  .route("/getAll")
+  .get(checkJwtToken, checkRole, userController.getAllUser);
+router
+  .route("/deleteUser/:id")
+  .delete(checkJwtToken, userController.deleteUser);
+router
+  .route("/changepassword")
+  .patch(checkJwtToken, userController.changePassword);
 
 export default router;

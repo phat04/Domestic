@@ -1,95 +1,63 @@
+import { StatusCodes } from "http-status-codes";
 import { AppDataSource } from "../databases/data";
-import { Domestic, DomesticStatus } from "../entities/Domestic";
-import { User } from "../entities/User";
+import { Domestic } from "../entities/Domestic";
 import { CustomAPIError } from "../errors/custom-error";
 
 export const createDomestic = async (body: any) => {
   const domesticRepository = AppDataSource.getRepository(Domestic);
-  const domestic = domesticRepository.create(body);
+  //const domestic = domesticRepository.create(body);
+  const { name, price } = body;
+  const domestic = new Domestic();
+  domestic.name = name;
+  domestic.price = price;
+  domestic.cart_items = [];
   return await domesticRepository.save(domestic);
 };
 
-// export const updatedomestic = async (req: Request, res: Response) => {
-//   const { user_id, status } = req.body;
-//   const userRepository = AppDataSource.getRepository(User);
-//   const user = userRepository.findOne({
-//     where: { id: parseInt(user_id) },
-//   });
-//   if (typeof user !== "object") {
-//     throw new CustomAPIError("Not found user", 404);
-//   }
-//   if (req.body.id) {
-//     throw new CustomAPIError("Don't change id", 403);
-//   }
-//   if (status) {
-//     // if (status !== domesticStatus.COMPLETE && status !== TodoStatus.NEW) {
-//     //   res.status(400).json({ message: "Please enter status gain" });
-//     //   return;
-//     // }
-//     if (status! in TodoStatus) {
-//       throw new CustomAPIError("Please enter status gain", 400);
-//     }
-//   }
-//   const { id } = req.params;
-//   const todoRepository = AppDataSource.getRepository(Todo);
-//   let todo = await todoRepository.findOneBy({
-//     id: parseInt(id),
-//   });
-//   if (!todo) {
-//     throw new CustomAPIError("Not found todo", 404);
-//   }
-//   await todoRepository.update({ id: parseInt(req.params.id) }, req.body);
-//   todo = await todoRepository.findOneBy({ id: parseInt(req.params.id) });
-//   return res.json({ message: "Updated", todo });
-// };
-
-export const getDomesticById = async (params: any) => {
-  const { id } = params;
+export const getDomesticById = async (id: number) => {
   const domesticRepository = AppDataSource.getRepository(Domestic);
   const domestic = await domesticRepository.findOneBy({
-    id: parseInt(id),
+    id: id,
   });
   if (!domestic) {
-    throw new CustomAPIError("Not found domestic", 404);
+    throw new CustomAPIError("Not found domestic", StatusCodes.NOT_FOUND);
   }
   return domestic;
 };
 
-export const getAllD = async (body: any) => {
-  const { name } = body;
+export const getAllDomestic = async () => {
   const domesticRepository = AppDataSource.getRepository(Domestic);
-  const domestic = await domesticRepository.find({
-    where: { name: name },
+  const domestics = await domesticRepository.find({
+    relations: { cart_items: true },
   });
-  if (!domestic) {
-    throw new CustomAPIError("Not found domestic", 404);
+  if (!domestics) {
+    throw new CustomAPIError("Not found domestics", StatusCodes.NOT_FOUND);
   }
-  return domestic;
+  return domestics;
 };
 
 export const updateDomesticById = async (id: number, body: any) => {
   if (body.id) {
-    throw new CustomAPIError("Don't change id", 403);
+    throw new CustomAPIError("Don't change id", StatusCodes.FORBIDDEN);
   }
   const domesticRepository = AppDataSource.getRepository(Domestic);
   let domestic = await domesticRepository.findOneBy({
     id: id,
   });
   if (!domestic) {
-    throw new CustomAPIError("Not found domestic", 404);
+    throw new CustomAPIError("Not found domestic", StatusCodes.NOT_FOUND);
   }
   await domesticRepository.update({ id: id }, body);
   return await domesticRepository.findOne({ where: { id: id } });
 };
 
-export const deleteDomesticById = async (params: any) => {
-  const { id } = params;
+export const deleteDomesticById = async (id: number) => {
   const domesticRepository = AppDataSource.getRepository(Domestic);
   const domestic = await domesticRepository.findOne({
-    where: { id: parseInt(id) },
+    where: { id: id },
   });
   if (!domestic) {
-    throw new CustomAPIError("Not found domestic", 404);
+    throw new CustomAPIError("Not found domestic", StatusCodes.NOT_FOUND);
   }
-  await domesticRepository.delete({ id: parseInt(id) });
+  await domesticRepository.delete({ id: id });
 };

@@ -1,11 +1,6 @@
-import { type } from "os";
+import { Role } from "../entities/User";
 
 export type JwtPayload = {
   id: number;
-
-  name: string;
-
-  email: string;
-
-  password: string;
+  role: Role;
 };

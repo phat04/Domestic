@@ -1,8 +1,10 @@
-import { DataSource, DataSourceOptions, DatabaseType } from "typeorm";
+import { DataSource } from "typeorm";
 import { Domestic } from "../entities/Domestic";
 import { User } from "../entities/User";
-import { Cart } from "../entities/Cart";
 import dotenv from "dotenv";
+import { Cart } from "../entities/Cart";
+import { Order } from "../entities/Order";
+import { CartItem } from "../entities/CartItem";
 dotenv.config();
 
 const AppDataSource = new DataSource({
@@ -12,10 +14,9 @@ const AppDataSource = new DataSource({
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE,
-  entities: [Domestic, User, Cart],
-  logging: true,
+  entities: [Domestic, User, Cart, Order, CartItem],
+  logging: false,
   synchronize: true,
 });
-console.log(process.env.DATABASE_PASSWORD);
 
 export { AppDataSource };

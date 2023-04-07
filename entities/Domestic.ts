@@ -1,10 +1,6 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from "typeorm";
+import { Entity, Column, OneToMany } from "typeorm";
+import { BaseEntity } from "./BaseEntity";
+import { CartItem } from "./CartItem";
 
 export enum DomesticStatus {
   NEW = "new",
@@ -12,34 +8,28 @@ export enum DomesticStatus {
 }
 
 @Entity()
-export class Domestic {
-  @PrimaryGeneratedColumn()
-  id!: number;
-
+export class Domestic extends BaseEntity {
   @Column()
   name!: string;
 
   @Column()
   price!: string;
 
-  @Column()
-  image: string;
+  // @Column({ nullable: true })
+  // image: string;
 
-  @Column()
-  image_placehoder: string;
+  // @Column({ nullable: true })
+  // image_placehoder: string;
 
-  @Column()
-  sale_price: number;
+  // @Column({ nullable: true })
+  // sale_price: number;
 
-  @Column()
-  variety: string;
+  @OneToMany(() => CartItem, (cart_item) => cart_item.domestic)
+  cart_items: CartItem[];
 
-  @Column()
-  date_of_completion!: Date;
+  // @Column({ nullable: true })
+  // variety: string;
 
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
+  // @Column({ nullable: true })
+  // date_of_completion!: Date;
 }
