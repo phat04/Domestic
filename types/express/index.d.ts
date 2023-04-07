@@ -1,5 +1,5 @@
 declare namespace Express {
   interface Request {
-    payload?: any;
+    payload: JwtPayload;
   }
 }
