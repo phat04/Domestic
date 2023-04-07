@@ -24,7 +24,7 @@ export class User extends BaseEntity {
   @OneToOne(() => Cart, {
     cascade: true,
   })
-  @JoinColumn()
+  @JoinColumn({ foreignKeyConstraintName: "cartId" })
   cart: Cart;
 
   hashPassword() {
