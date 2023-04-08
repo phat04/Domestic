@@ -1,6 +1,6 @@
-import { Role } from "../entities/User";
+import { Role } from '../entities/User';
 
 export type JwtPayload = {
-  id: number;
+  sub: number;
   role: Role;
 };
